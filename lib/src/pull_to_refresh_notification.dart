@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart' show CupertinoDynamicColor;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 // The over-scroll distance that moves the indicator to its maximum
 // displacement, as a percentage of the scrollable's container extent.
@@ -21,6 +19,9 @@ const Duration _kIndicatorSnapDuration = Duration(milliseconds: 150);
 // The duration of the ScaleTransition that starts when the refresh action
 // has completed.
 const Duration _kIndicatorScaleDuration = Duration(milliseconds: 200);
+
+// todo check, add by doersoul@126.com
+const Duration _kIndicatorPullBackDuration = Duration(milliseconds: 400);
 
 /// The signature for a function that's called when the user has dragged a
 /// [PullToRefreshNotification] far enough to demonstrate that they want the app to
@@ -60,9 +61,11 @@ class PullToRefreshNotification extends StatefulWidget {
     this.pullBackCurve = Curves.linear,
     this.reverse = false,
     this.pullBackOnError = false,
-    this.pullBackDuration = const Duration(milliseconds: 400),
+    this.pullBackDuration = _kIndicatorPullBackDuration,
     this.refreshOffset,
     this.reachToRefreshOffset,
+    // todo check, add by doersoul@126.com
+    this.delayPullBack = true,
   }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
@@ -125,6 +128,10 @@ class PullToRefreshNotification extends StatefulWidget {
 
   /// The offset to be dragged far enough that an up event will run the onRefresh callback.
   final double? reachToRefreshOffset;
+
+  // todo check, add by doersoul@126.com
+  // The duration to use for the pullback animation
+  final bool delayPullBack;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -502,7 +509,24 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
                 _refreshIndicatorMode == PullToRefreshIndicatorMode.canceled) ||
         (_refreshIndicatorMode == PullToRefreshIndicatorMode.error &&
             widget.pullBackOnError)) {
-      _pullBack();
+
+      // todo check, update by doersoul@126.com
+      if (widget.delayPullBack &&
+          _refreshIndicatorMode == PullToRefreshIndicatorMode.done) {
+        _onNoticed.add(
+          PullToRefreshScrollNotificationInfo(
+            _refreshIndicatorMode,
+            _notificationDragOffset,
+            _getRefreshWidget(),
+            this,
+          ),
+        );
+
+        Future<void>.delayed(widget.pullBackDuration, _pullBack);
+      } else {
+        _pullBack();
+      }
+
       return;
     }
 
