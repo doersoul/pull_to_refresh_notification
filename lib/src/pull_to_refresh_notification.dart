@@ -20,9 +20,6 @@ const Duration _kIndicatorSnapDuration = Duration(milliseconds: 150);
 // has completed.
 const Duration _kIndicatorScaleDuration = Duration(milliseconds: 200);
 
-// todo check, add by doersoul@126.com
-const Duration _kIndicatorPullBackDuration = Duration(milliseconds: 400);
-
 /// The signature for a function that's called when the user has dragged a
 /// [PullToRefreshNotification] far enough to demonstrate that they want the app to
 /// refresh. The returned [Future] must complete when the refresh operation is
@@ -61,12 +58,12 @@ class PullToRefreshNotification extends StatefulWidget {
     this.pullBackCurve = Curves.linear,
     this.reverse = false,
     this.pullBackOnError = false,
-    this.pullBackDuration = _kIndicatorPullBackDuration,
+    this.pullBackDuration = Durations.medium2,
     this.refreshOffset,
     this.reachToRefreshOffset,
     // todo check, add by doersoul@126.com
     this.delayPullBack = true,
-    this.delayPullBackDuration = Durations.extralong4,
+    this.delayPullBackDuration = Durations.long4,
   }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
