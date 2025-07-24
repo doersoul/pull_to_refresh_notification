@@ -66,6 +66,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.reachToRefreshOffset,
     // todo check, add by doersoul@126.com
     this.delayPullBack = true,
+    this.delayPullBackDuration = Durations.extralong4,
   }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
@@ -132,6 +133,7 @@ class PullToRefreshNotification extends StatefulWidget {
   // todo check, add by doersoul@126.com
   // The duration to use for the pullback animation
   final bool delayPullBack;
+  final Duration delayPullBackDuration;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -522,7 +524,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           ),
         );
 
-        Future<void>.delayed(widget.pullBackDuration, _pullBack);
+        Future<void>.delayed(widget.delayPullBackDuration, _pullBack);
       } else {
         _pullBack();
       }
