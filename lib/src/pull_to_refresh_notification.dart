@@ -62,7 +62,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.refreshOffset,
     this.reachToRefreshOffset,
     // todo check, add by doersoul@126.com
-    this.delayPullBack = true,
+    this.delayPullBack = false,
     this.delayPullBackDuration = Durations.long4,
   }) : super(key: key);
 
